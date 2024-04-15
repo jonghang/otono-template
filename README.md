@@ -1,0 +1,2 @@
+# otono-template
+App templates
