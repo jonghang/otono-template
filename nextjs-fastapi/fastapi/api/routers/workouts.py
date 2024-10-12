@@ -1,5 +1,5 @@
 from pydantic import BaseModel
-from typing import Optional
+from typing import Optional, List
 from fastapi import APIRouter, status
 
 from api.models import Workout
@@ -15,7 +15,7 @@ class WorkoutBase(BaseModel):
     description: Optional[str] = None
     
 class WorkoutCreate(WorkoutBase):
-    pass
+    routines: List[int] = []
 
 @router.get('/')
 def get_workout(db: db_dependency, user: user_dependency, workout_id: int):

@@ -16,13 +16,14 @@ class RoutineBase(BaseModel):
     description: Optional[str] = None
     
 class RoutineCreate(RoutineBase):
-    workouts = List[int] = []
+    workouts: List[int] = []
     
 @router.get('/')
 def get_routines(db:db_dependency, user: user_dependency):
-    return db.query(Routine).options(joinedload(Routine.workouts) \
+    return db.query(Routine) \
+        .options(joinedload(Routine.workouts)) \
         .filter(Routine.user_id == user.get('id')) \
-        .all())
+        .all()
 
 @router.post('/')
 def create_routine(db: db_dependency, user: user_dependency, routine: RoutineCreate):
