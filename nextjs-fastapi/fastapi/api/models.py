@@ -16,7 +16,7 @@ class User(Base):
     
 class Workout(Base):
     __tablename__='workouts'
-    id = Column(String, primary_key=True, index=True)
+    id = Column(Integer, primary_key=True, index=True)
     user_id = Column(Integer, ForeignKey('users.id'))
     name = Column(String, index=True)
     description = Column(String, index=True)
