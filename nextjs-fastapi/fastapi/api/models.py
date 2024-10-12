@@ -8,19 +8,27 @@ workout_routine_association = Table(
     Column('routine_id', Integer, ForeignKey('routines.id'))
 )
 
-doc_compare_user_association = Table(
-    'doc_compare_user', Base.metadata,
-    Column('user_id', String, ForeignKey('users.id')),
-    Column('document_compare_id', String, ForeignKey('document_compare.id'))
-)
-
 class User(Base):
     __tablename__='users'
     id = Column(Integer, primary_key=True, index=True)
-    userid = Column(String, unique=True, index=True)
-    email = Column(String)
+    username = Column(String, unique=True, index=True)
+    hashed_password = Column(String)
     
-class DocumentCompare(Base):
-    __tablename__='document_compare'
+class Workout(Base):
+    __tablename__='workouts'
     id = Column(String, primary_key=True, index=True)
+    user_id = Column(Integer, ForeignKey('users.id'))
+    name = Column(String, index=True)
+    description = Column(String, index=True)
+    routines = relationship('Routine', secondary=workout_routine_association, back_populates='workouts')
     
+class Routine (Base):
+    __tablename__ = 'routines'
+    id = Column(Integer, primary_key=True, index=True)
+    user_id = Column(Integer, ForeignKey('users.id'))
+    name = Column(String, index=True)
+    description = Column(String, index=True)
+    workouts = relationship('Workout', secondary=workout_routine_association, back_populates='routines')
+    
+Workout.routines = relationship('Routine', secondary=workout_routine_association, back_populates='workouts')
+Routine.workouts = relationship('Workout', secondary=workout_routine_association, back_populates='routines')
